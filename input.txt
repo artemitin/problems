@@ -1,0 +1,13 @@
+2
+/project/internal/
+/project/docs/
+5
+/project/docs/internal.md
+/project/lib/header.cpp
+/project/lib/header.h
+/project/bin/main.cpp
+/project/internal/secret.h
+3
+/
+/project/internal/
+/project/lib/
