@@ -3,7 +3,7 @@ package test.arrays;
 /**
  * Given an array of integers nums, sort it in ascending order using the merge sort algorithm.
  */
-public class MergeSort {
+public class MergeSortIter {
 
     public static void main(String[] args) {
         int N = 1300000000;
@@ -26,18 +26,32 @@ public class MergeSort {
 
     /* 'left' is for left index and 'right' is right index of the sub-array of arr to be sorted */
     private static void mergeSort(int[] arr, int left, int right) {
-        if (left < right) {
+        //init
+        int iStack = 0;
+        int[] stack = new int[2];
+        stack[iStack++] = left;
+        stack[iStack++] = right;
 
-            // Same as (left + right) / 2, but avoids overflow
-            // for large left and right
-            int mid = left + (right - left) / 2;
+        while (iStack > 0) {
+            right = stack[--iStack];
+            left = stack[--iStack];
 
-            // Sort first and second halves
-            mergeSort(arr, left, mid);
-            mergeSort(arr, mid + 1, right);
+            if (left < right) {
+                // Same as (left + right) / 2, but avoids overflow
+                // for large left and right
+                int mid = left + (right - left) / 2;
+                merge(arr, left, mid, right);
+                stack[iStack++] = left;
+                stack[iStack++] = mid;
 
-            merge(arr, left, mid, right);
+                // Sort first and second halves
+                mergeSort(arr, left, mid);
+                mergeSort(arr, mid + 1, right);
+
+                merge(arr, left, mid, right);
+            }
         }
+
     }
 
     // Merges two subarrays of arr[].

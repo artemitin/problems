@@ -1,40 +1,44 @@
 package test.arrays;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
  * Given an array of integers nums, sort it in ascending order using the quicksort algorithm.
  */
-public class Quicksort {
+public class Quickselect {
 
     public static void main(String[] args) {
         int N = 1300;
-        int[] arr = IntStream.range(0, N).toArray();
-        Arrays.sort(arr);
+//        int[] arr = IntStream.range(0, N).toArray();
+//        Arrays.sort(arr);
 //        int[] arr = new Random().ints(12000, 0, 12000).toArray();
-//        int[] arr = {55, 23, 26, 2, 25};
+        int[] arr = {55, 23, 26, 2, 25};
         long start = System.currentTimeMillis();
-        quickSort(arr);
+        int nth = 2;
+        int i = quickSelect(arr, nth);
         System.out.println("Time elapsed: " + (System.currentTimeMillis() - start));
 //        System.out.println(Arrays.toString(arr));
+        System.out.printf("%sth largest: %s", nth, i);
     }
 
-    static void quickSort(int[] arr) {
-        quickSortRec(arr, 0, arr.length - 1);
-    }
-
-    private static void quickSortRec(int[] arr, int low, int high) {
-        if (high > low) {
-            // pivot_index is the partitioning index
-            int pivotIndex = partition(arr, low, high);
-
-            // Sort elements before partition
-            quickSortRec(arr, low, pivotIndex - 1);
-
-            // Sort elements after partition
-            quickSortRec(arr, pivotIndex + 1, high);
+    static int quickSelect(int[] arr, int n) {
+        int low = 0;
+        int high = arr.length - 1;
+        // iPivot is the Kth largest
+        while (true) {
+            int iPivot = partition(arr, low, high);
+            if (iPivot == n - 1) {
+                return arr[iPivot];
+            }
+            if (n - 1 < iPivot) {
+                // find in left partition
+                high = iPivot - 1;
+            }
+            if (iPivot < n - 1) {
+                // find in right partition
+                low = iPivot + 1;
+            }
         }
     }
 
