@@ -8,11 +8,13 @@ import java.util.function.Supplier;
 
 public class TopnMostFrequent {
 
+    public static final int RANGE = 20000000;
+
     public static void main(String[] args) throws InterruptedException {
-//        int[] arr = {5, 2, 5, 5, 2, 1, 1, 1};
-        int length = 100000;
-        int k = 10000;
-        int[] arr = new Random().ints(length, 0, 20000).toArray();
+//        int[] arr = {4, 2, 3, 2, 3, 1};
+        int length = 100000000;
+        int k = 100000;
+        int[] arr = new Random().ints(length, 0, RANGE).toArray();
 
         Function<Supplier<?>, ?> measure = runnable -> {
             long start = System.currentTimeMillis();
@@ -21,39 +23,73 @@ public class TopnMostFrequent {
             return r;
         };
 
-        int[] result = (int[]) measure.apply(() -> topKFrequent(arr, k));
+        int[] result = (int[]) measure.apply(() -> topKFrequentMaxHeap(arr, k));
 
 //        System.out.println(Arrays.toString(result));
-        System.out.println(result.length);
+//        System.out.println(result.length);
     }
 
+    //minheap
     public static int[] topKFrequent(int[] nums, int k) {
         if (k == nums.length) {
             return nums;
         }
 
-        int[] freq = new int[20000];
+        int[] freq = new int[RANGE];
         for(int x: nums) {
             freq[x]++;
         }
 
         Comparator<Integer> comparator = (a, b) -> freq[a] - freq[b];
-        Queue<Integer> queue = new PriorityQueue<>(k, comparator);
+        PriorityQueue<Integer> queue = new PriorityQueue<>(k, comparator);
 
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] != 0) {
                 if (queue.size() < k) {
                     queue.offer(i);
                 } else if (comparator.compare(i, queue.peek()) > 0) {
-                    queue.poll();
                     queue.offer(i);
+                    queue.poll();
                 }
             }
         }
 
         int[] result = new int[k];
         for (int i = 0; i < k; i++) {
-            result[i] = queue.poll();
+            Integer poll = queue.poll();
+            if (poll != null) {
+                result[i] = poll;
+            }
+        }
+        return result;
+    }
+
+    //maxHeap less performant
+    public static int[] topKFrequentMaxHeap(int[] nums, int k) {
+        if (k == nums.length) {
+            return nums;
+        }
+
+        int[] freq = new int[RANGE];
+        for(int x: nums) {
+            freq[x]++;
+        }
+
+        Comparator<Integer> comparator = (a, b) -> freq[b] - freq[a];
+        PriorityQueue<Integer> queue = new PriorityQueue<>(k, comparator);
+
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] != 0) {
+                queue.offer(i);
+            }
+        }
+
+        int[] result = new int[k];
+        for (int i = 0; i < k; i++) {
+            Integer poll = queue.poll();
+            if (poll != null) {
+                result[i] = poll;
+            }
         }
         return result;
     }
