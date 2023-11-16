@@ -9,6 +9,10 @@ public class MoveAllZeroToBegin {
 
     public static void main(String[] args) {
         int[] arr = {1, 10, 20, 0, 59, 63, 0, 88, 0};
+//                  [1, 10, 20, 59, 63, 88, 0, 88, 0]
+//        int[] arr = {1, 10, 20, 59, 63, 88, 0, 88, 0};
+        //                                    w
+        //                                            r
 //        int[] arr = {1, 2, 3, 4, 5};
         moveZerosToRight(arr);
 //        moveZerosToLeft(arr);
@@ -31,13 +35,12 @@ public class MoveAllZeroToBegin {
     }
 
     static void moveZerosToRight(int[] nums) {
-        int read = 0;
-        int write = read;
-        while (read < nums.length) {
+        int write = 0;
+        for (int read = 0; read < nums.length; read++) {
             if (nums[read] != 0) {
-                nums[write++] = nums[read];
+                nums[write] = nums[read];
+                write++;
             }
-            read++;
         }
 
         while (write < nums.length) {
