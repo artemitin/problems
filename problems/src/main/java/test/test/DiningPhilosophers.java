@@ -21,11 +21,10 @@ public class DiningPhilosophers {
 
         for (int i = 0; i < 5; i++) {
             executorService.submit(() -> {
-                int counter = 0;
                 final String name = Thread.currentThread().getName();
 
                 while (true) {
-                    System.out.println(name + ": PREPARE DINE");
+                    System.out.println(name + ": PREPARE EAT");
 
                     String left = null;
                     String right = null;
@@ -33,25 +32,25 @@ public class DiningPhilosophers {
                     synchronized (listForks) {
                         if (listForks.size() >= 2) {
                             left = listForks.takeFirst();
-                            System.out.println(name + ": TOOK LEFT");
+                            System.out.println(name + ": TAKE LEFT");
 
                             right = listForks.takeFirst();
-                            System.out.println(name + ": TOOK RIGHT");
+                            System.out.println(name + ": TAKE RIGHT");
                         }
                     }
 
-                    System.out.println(name + ": START DINE");
-//                    Thread.sleep(1000);
-                    System.out.println(name + ": FINISH DINE: " + ++counter);
+                    System.out.println(name + ": START EAT");
+                    Thread.sleep(1000);
+                    System.out.println(name + ": FINISH EAT: ");
 
                     if (left != null) {
                         listForks.addLast(left);
-                        System.out.println(name + ": RETURN LEFT");
+                        System.out.println(name + ": PUT LEFT");
                     }
 
                     if (right != null) {
                         listForks.addLast(right);
-                        System.out.println(name + ": RETURN RIGHT");
+                        System.out.println(name + ": PUT RIGHT");
                     }
                 }
             });
@@ -59,19 +58,5 @@ public class DiningPhilosophers {
 
         executorService.shutdown();
         executorService.awaitTermination(5, TimeUnit.SECONDS);
-    }
-
-    public static long minimalKSum(int[] nums, int k) {
-        Arrays.sort(nums);
-        long sum = 0;
-
-        for (int num : nums) {
-            if (num <= k) {
-                k++;
-                sum += num;
-            }
-        }
-
-        return (long) (1 + k) * k / 2 - sum;
     }
 }

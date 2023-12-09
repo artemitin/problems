@@ -2,11 +2,6 @@ package test.dynamic;
 
 public class LevenshteinDistance {
 
-    // Returns the least of the three values
-    static int minimum(int a, int b, int c) {
-        return Math.min(Math.min(a, b), c);
-    }
-
     public static int levenshteinDistance(String str1, String str2) {
         // Get string lengths
         int m = str1.length();
@@ -57,6 +52,11 @@ public class LevenshteinDistance {
             }
         }
         return d[m][n];
+    }
+
+    // Returns the least of the three values
+    static int minimum(int a, int b, int c) {
+        return Math.min(Math.min(a, b), c);
     }
 
     public static void main(String[] args) {

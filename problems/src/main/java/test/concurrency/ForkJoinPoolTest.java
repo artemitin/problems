@@ -31,9 +31,7 @@ public class ForkJoinPoolTest {
 
     public static int[] getInitArray(int capacity) {
         int[] array = new int[capacity];
-        for (int i = 0; i < capacity; i++) {
-            array[i] = 1;
-        }
+        Arrays.fill(array, 1);
         return array;
     }
 
@@ -80,9 +78,9 @@ public class ForkJoinPoolTest {
             }
             int mid = (right + left) >> 1;
             ForkJoinTask<Integer> leftTask =
-                    new SumTask(array, left, mid, "" + left + "|" + mid).fork();
+                    new SumTask(array, left, mid, left + "|" + mid).fork();
             ForkJoinTask<Integer> rightTask =
-                    new SumTask(array, mid + 1, right, "" + (mid + 1) + "|" + right).fork();
+                    new SumTask(array, mid + 1, right, (mid + 1) + "|" + right).fork();
             return leftTask.join() + rightTask.join();
         }
     }

@@ -1,12 +1,12 @@
-
+package test.dynamic;
 /*1277. Count squares*/
 
 import test.MeasureUtil;
 
-public class Main {
+public class CountSquares {
 
     public static void main(String[] args) {
-        Main main = new Main();
+        CountSquares main = new CountSquares();
         int[][] matrix = {
                 {0, 0, 0},
                 {0, 1, 0},
